@@ -20,10 +20,12 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 // ─── MongoDB Connection ───────────────────────────────────
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/task-api";
 
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(MONGODB_URI)
+    .then(() => console.log("✅ MongoDB connected"))
+    .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+}
 
 // ─── Models ───────────────────────────────────────────────
 const userSchema = new mongoose.Schema({
